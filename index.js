@@ -25,7 +25,7 @@ app.get('/users', async (req, res) => {
     res.json(response.rows);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).send('Could not fetch users');
   }
 });
 
@@ -48,7 +48,7 @@ app.post('/users', async (req, res) => {
   } catch (err) {
     console.error(err.message);
     client && client.release();
-    res.status(500).send('Server Error');
+    res.status(500).send('Could not create User');
   }
 });
 
