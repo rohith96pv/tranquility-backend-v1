@@ -19,6 +19,7 @@ CREATE TABLE demographics (
   employmentstatus VARCHAR(255)
 );
 
+------
 -- Mood questionnaire table
 CREATE TABLE moodquestionnaire (
   questionnaireid SERIAL PRIMARY KEY,
@@ -26,9 +27,14 @@ CREATE TABLE moodquestionnaire (
   datetimefilled TIMESTAMP NOT NULL,
   moodscore INT,
   stresslevel INT,
-  sleepquality INT
+  sleepquality INT,
+  question1 INT CHECK (question1 >= 1 AND question1 <= 5),
+  question2 INT CHECK (question2 >= 1 AND question2 <= 5),
+  question3 INT CHECK (question3 >= 1 AND question3 <= 5),
+  question4 INT CHECK (question4 >= 1 AND question4 <= 5),
+  question5 INT CHECK (question5 >= 1 AND question5 <= 5)
 );
-
+------
 -- Media content table
 CREATE TABLE mediacontent (
   mediaid SERIAL PRIMARY KEY,

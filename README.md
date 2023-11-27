@@ -26,7 +26,7 @@ This route fetches all the existing users
 ---------------
 POST || /users:
 This route used to create a user
-Note: email is UNIQUE and hence duplicates are not allowed. Use different email value for every new request.
+Note: email is UNIQUE and hence duplicates are not allowed. Use different email value for every new request
     --------------------
     sample curl request:
     ---------------------
@@ -38,5 +38,24 @@ Note: email is UNIQUE and hence duplicates are not allowed. Use different email 
     "email": "user7@example.com"
     }
     '
-    -------------
+-------------
+POST || /questionnaire
+This route is used to set the questionnaire for exisiting users
+    ------------------
+    Sample CURL request:
+    ------------------
+                curl --location 'http://localhost:3000/questionnaire' \
+            --header 'Content-Type: application/json' \
+            --data '{
+            "userid": 2,
+            "moodscore": 5,
+            "stresslevel": 3,
+            "sleepquality": 4,
+            "question1": 2,
+            "question2": 3,
+            "question3": 4,
+            "question4": 5,
+            "question5": 1
+            }
+'
 ---------------

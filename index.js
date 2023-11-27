@@ -63,6 +63,34 @@ app.post('/users', async (req, res) => {
   }
 });
 
+app.post('/questionnaire', async (req, res) => {
+  const client = await pool.connect();
+
+  try {
+    console.log("inside POST /moodquestionnaire");
+    const { userid, moodscore, stresslevel, sleepquality, question1, question2, question3, question4, question5 } = req.body;
+    const datetimefilled = new Date(); // Assuming the date filled is the current date
+
+    const queryText = 'INSERT INTO moodquestionnaire (userid, datetimefilled, moodscore, stresslevel, sleepquality, question1, question2, question3, question4, question5) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *';
+    const values = [userid, datetimefilled, moodscore, stresslevel, sleepquality, question1, question2, question3, question4, question5];
+
+    const response = await client.query(queryText, values);
+    console.log("Response: ", response);
+    console.log("New mood questionnaire entry created: ", response.rows[0]);
+    res.json(response.rows[0]);
+  } catch (err) {
+    console.log("inside catch block");
+    console.error(err.message);
+    // Handle specific errors as needed, for example, missing fields, foreign key violations, etc.
+    return res.status(500).send('Failed to create Mood Questionnaire entry');
+  } finally {
+    if (client) {
+      client.release();
+    }
+  }
+});
+
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
