@@ -1,7 +1,9 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const { Pool } = require('pg');
 
+app.use(cors());
 app.use(express.json());
 
 const pool = new Pool({
@@ -63,6 +65,7 @@ app.post('/users', async (req, res) => {
   }
 });
 
+//route to insert questionnaire details into db
 app.post('/questionnaire', async (req, res) => {
   const client = await pool.connect();
 
@@ -90,6 +93,34 @@ app.post('/questionnaire', async (req, res) => {
   }
 });
 
+//Route to insert userInteractionFeedback 
+app.post('/userinteractionfeedback', async (req, res) => {
+  const client = await pool.connect();
+
+  try {
+    console.log("inside POST /userinteractionfeedback");
+    //reaction will either be liked, disliked, uncertain
+    const { userid, mediaid, reaction } = req.body;
+    const reactiondatetime = new Date(); // Assuming the date of the reaction is the current date
+
+    const queryText = 'INSERT INTO userinteractionfeedback (userid, mediaid, reaction, reactiondatetime) VALUES ($1, $2, $3, $4) RETURNING *';
+    const values = [userid, mediaid, reaction, reactiondatetime];
+
+    const response = await client.query(queryText, values);
+    console.log("Response: ", response);
+    console.log("New user interaction feedback entry created: ", response.rows[0]);
+    res.json(response.rows[0]);
+  } catch (err) {
+    console.log("inside catch block");
+    console.error(err.message);
+    // Handle specific errors as needed, for example, missing fields, foreign key violations, etc.
+    return res.status(500).send('Failed to create User Interaction Feedback entry');
+  } finally {
+    if (client) {
+      client.release();
+    }
+  }
+});
 
 
 const PORT = process.env.PORT || 3000;
