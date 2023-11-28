@@ -80,3 +80,17 @@ This route is used to set the questionnaire for exisiting users
             }
 '
 ---------------
+POST || /userinteractionfeedback
+This route is used to set the user interaction feedback for the media files
+    ------------------
+    Sample CURL request:
+    ------------------
+          curl --location 'http://localhost:3000/userinteractionfeedback' \
+        --header 'Content-Type: application/json' \
+        --data '{
+                    "userid": 2,
+                    "mediaid":1,
+                    "reaction": "uncertain"
+                }
+            '     
+---------------            
