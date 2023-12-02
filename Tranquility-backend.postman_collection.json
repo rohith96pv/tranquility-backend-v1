@@ -1,0 +1,113 @@
+{
+	"info": {
+		"_postman_id": "855ad0f7-e10e-4f93-8ba6-7b79ac26f076",
+		"name": "Tranquility-backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31414860"
+	},
+	"item": [
+		{
+			"name": "to get all users /users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User /users",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"haarish\",\n  \"passwordhash\": \"sdasdasca\",\n  \"email\": \"user16@example.com\"\n}\n"
+				},
+				"url": {
+					"raw": "http://localhost:3000/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Questionnaire /questionnaire",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"userid\": 2,\n  \"moodscore\": 5,\n  \"stresslevel\": 3,\n  \"sleepquality\": 4,\n  \"question1\": 2,\n  \"question2\": 3,\n  \"question3\": 4,\n  \"question4\": 5,\n  \"question5\": 1\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/questionnaire",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"questionnaire"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Media Feedback /userinteractionfeedback",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"userid\": 2,\n  \"mediaid\":1,\n  \"reaction\": \"liked\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/userinteractionfeedback",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"userinteractionfeedback"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
