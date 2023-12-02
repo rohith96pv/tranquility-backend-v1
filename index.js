@@ -9,20 +9,19 @@ app.use(express.json());
 const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
-  database: 'tranquilityDatabase',
+  database: 'tranquilityDatabase1',
   password: 'rohith',
   port: 5433,
 });
 
-/////////////
+
 //Routes
-////////////
+
 //GET all users
 app.get('/users', async (req, res) => {
   const client = await pool.connect();
   try {
     console.log("inside /users");
-    // const client = await pool.connect();
     const response = await client.query('SELECT * FROM users');
     console.log("users response =", response.rows);
     res.json(response.rows);
@@ -33,21 +32,19 @@ app.get('/users', async (req, res) => {
 });
 
 
-//Create new user
+//create new user
 app.post('/users', async (req, res) => {
   const client = await pool.connect();
   try {
     console.log("inside POST /users");
     const { username, passwordhash, email } = req.body;
     const datecreated = new Date(); // Assuming the date created is the current date
-    // const client = await pool.connect();
     const queryText = 'INSERT INTO users (username, passwordhash, email, datecreated) VALUES ($1, $2, $3, $4) RETURNING *';
     const values = [username, passwordhash, email, datecreated];
     const response = await client.query(queryText, values);
     console.log("Response :", response);
     console.log("New user created:", response.rows[0]);
     res.json(response.rows[0]);
-    // client.release();
   } catch (err) {
     console.log("inside catch block");
     console.error(err.message);
@@ -65,18 +62,17 @@ app.post('/users', async (req, res) => {
   }
 });
 
-//route to insert questionnaire details into db
+//insert questionnaire details
 app.post('/questionnaire', async (req, res) => {
   const client = await pool.connect();
-
   try {
     console.log("inside POST /moodquestionnaire");
-    const { userid, moodscore, stresslevel, sleepquality, question1, question2, question3, question4, question5 } = req.body;
+    const { userid, question1, question2, question3, question4, question5 } = req.body;
     const datetimefilled = new Date(); // Assuming the date filled is the current date
 
-    const queryText = 'INSERT INTO moodquestionnaire (userid, datetimefilled, moodscore, stresslevel, sleepquality, question1, question2, question3, question4, question5) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *';
-    const values = [userid, datetimefilled, moodscore, stresslevel, sleepquality, question1, question2, question3, question4, question5];
-
+    const queryText = 'INSERT INTO moodquestionnaire (userid, datetimefilled, question1, question2, question3, question4, question5) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *';
+    const values = [userid, datetimefilled, question1, question2, question3, question4, question5];
+    
     const response = await client.query(queryText, values);
     console.log("Response: ", response);
     console.log("New mood questionnaire entry created: ", response.rows[0]);
@@ -93,7 +89,7 @@ app.post('/questionnaire', async (req, res) => {
   }
 });
 
-//Route to insert userInteractionFeedback 
+//insert userInteractionFeedback details
 app.post('/userinteractionfeedback', async (req, res) => {
   const client = await pool.connect();
 
@@ -113,7 +109,6 @@ app.post('/userinteractionfeedback', async (req, res) => {
   } catch (err) {
     console.log("inside catch block");
     console.error(err.message);
-    // Handle specific errors as needed, for example, missing fields, foreign key violations, etc.
     return res.status(500).send('Failed to create User Interaction Feedback entry');
   } finally {
     if (client) {
@@ -121,7 +116,6 @@ app.post('/userinteractionfeedback', async (req, res) => {
     }
   }
 });
-
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

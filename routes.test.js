@@ -14,14 +14,6 @@ describe('GET /users', () => {
   
 
 describe('POST /users', () => {
-    // it('should create a new user', async () => {
-    //   const newUser = { username: 'testuser', passwordhash: 'testhash', email: 'test@test.com' };
-    //   const res = await request(app).post('/users').send(newUser);
-    //   expect(res.statusCode).toEqual(200);
-    //   expect(res.body).toHaveProperty('username', newUser.username);
-    //   // Add more assertions as necessary
-    // });
-  
     it('should not create user with duplicate email', async () => {
       const duplicateUser = { username: 'testuser2', passwordhash: 'testhash2', email: 'test@test.com' };
       const res = await request(app).post('/users').send(duplicateUser);
@@ -35,7 +27,7 @@ describe('POST /users', () => {
   
 describe('POST /questionnaire', () => {
     it('should create a new questionnaire entry', async () => {
-      const newEntry = { userid: '2', moodscore: '5', stresslevel: '3', sleepquality: '4', question1: '2', question2: '3', question3: '4', question4: '5', question5: '1'};
+      const newEntry = { userid: '2', question1: '2', question2: '3', question3: '4', question4: '5', question5: '1'};
       const res = await request(app).post('/questionnaire').send(newEntry);
       expect(res.statusCode).toEqual(200);
       // Add assertions based on your response structure
