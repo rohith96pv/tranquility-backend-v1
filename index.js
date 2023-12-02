@@ -9,11 +9,10 @@ app.use(express.json());
 const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
-  database: 'tranquilityDatabase1',
+  database: 'tranquilityDatabase',
   password: 'rohith',
   port: 5433,
 });
-
 
 //Routes
 
@@ -31,6 +30,41 @@ app.get('/users', async (req, res) => {
   }
 });
 
+//GET all questionnaire responses
+app.get('/moodquestionnaire', async (req, res) => {
+  const client = await pool.connect();
+  try {
+    console.log("inside /allQuestionnaire");
+    const response = await client.query('SELECT * FROM moodquestionnaire');
+    console.log("questionnaire response =", response.rows);
+    res.json(response.rows);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Could not fetch questionnaires');
+  }
+});
+
+// GET responses from moodquestionnaire for a specific user
+app.get('/moodquestionnaire/:userid', async (req, res) => {
+  const userid = parseInt(req.params.userid);
+  const client = await pool.connect();
+  try {
+    console.log(`Fetching mood questionnaire responses for user ID: ${userid}`);
+    const response = await client.query('SELECT * FROM moodquestionnaire WHERE userid = $1', [userid]);
+    console.log("Fetched response : ",response);
+    if (response.rows.length > 0) {
+      res.json(response.rows);
+      console.log('Fetched Response',response.rows);
+    } else {
+      res.status(404).send(`No mood questionnaire responses found for user ID: ${userid}`);
+    }
+  } catch (err) {
+    console.error(`Error fetching mood questionnaire responses: ${err.message}`);
+    res.status(500).send('Internal Server Error');
+  } finally {
+    client.release();
+  }
+});
 
 //create new user
 app.post('/users', async (req, res) => {
